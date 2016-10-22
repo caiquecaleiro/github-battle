@@ -14,7 +14,7 @@ function getRepos(username) {
 
 function getTotalStars(repos) {
   return repos.data.reduce(function(previous, current) {
-    return prev + current.stargazers_count;
+    return previous + current.stargazers_count
   }, 0);
 }
 
@@ -26,7 +26,7 @@ function getPlayersData(player) {
         followers: player.followers,
         totalStars: totalStars
       }
-  });
+    });
 }
 
 function calculateScores(players) {
@@ -39,7 +39,7 @@ function calculateScores(players) {
 var helpers = {
   getPlayersInfo: function(players) {
     return axios.all(players.map(function(username) {
-        return getUserInfo(username);
+      return getUserInfo(username);
     }))
     .then(function(info) {
       return info.map(function(user) {
@@ -47,17 +47,16 @@ var helpers = {
       });
     })
     .catch(function(error) {
-      console.warn('Error in getPlayersInfo', error);
+      console.warn('Error in getPlayersInfo: ', error);
     });
   },
   battle: function(players) {
     var playerOneData = getPlayersData(players[0]);
     var playerTwoData = getPlayersData(players[1]);
-
     return axios.all([playerOneData, playerTwoData])
       .then(calculateScores)
-      .catch(function(error) { 
-        console.warn('Error in getPlayersInfo: ' + error)
+      .catch(function(error) {
+        console.warn('Error in getPlayersInfo: ', error);
       });
   }
 };
